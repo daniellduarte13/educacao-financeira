@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - Educação Financeira{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 simulador-card">
+                <div class="card-header text-center">
+                    <img src="{% static 'assets/img/logo_definitivo.png' %}" alt="Logo" class="navbar-logo" style="height: 50px;">
+                    <h3 class="mt-3 text-white">Login</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                        {% endif %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label text-white">Nome de usuário</label>
+                            {{ form.username }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label text-white">Senha</label>
+                            {{ form.password }}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Exclusão{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Tem certeza de que deseja excluir esta publicação?</h2>
+    <p><strong>Título:</strong> {{ publicacao.titulo }}</p>
+    <p><strong>Conteúdo:</strong> {{ publicacao.conteudo }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Excluir</button>
+        <a href="{% url 'profile' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %} 

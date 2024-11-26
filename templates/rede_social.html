@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Financeiro Online{% endblock %}
+
+{% block content %}
+<div class="container-xl mt-5">
+    <h1 class="text-center mb-4">Bem-vindo ao Financeiro Online!</h1>
+
+    <div class="row">
+        <!-- Card para criação de publicação -->
+        <div class="col-md-12 mb-5">
+            <div class="card shadow-lg p-4 simulador-card">
+                <h2 class="text-center">Publicar Novo Conteúdo</h2>
+
+                <!-- Incluir o bloco de mensagens -->
+                {% include 'includes/messages.html' %}
+
+                <form method="post" class="mb-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="{{ form.titulo.id_for_label }}" class="form-label">Título</label>
+                        <input type="text" name="{{ form.titulo.name }}" id="{{ form.titulo.id_for_label }}" class="form-control" value="{{ form.titulo.value|default_if_none:'' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="{{ form.conteudo.id_for_label }}" class="form-label">Conteúdo</label>
+                        <textarea name="{{ form.conteudo.name }}" id="{{ form.conteudo.id_for_label }}" class="form-control">{{ form.conteudo.value|default_if_none:'' }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Publicar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Card para exibição de publicações -->
+        <div class="col-md-12">
+            <h2 align="center">Publicações Recentes</h2>
+            <div class="card shadow-lg p-4 simulador-card">
+                <ul class="list-unstyled">
+                    {% for publicacao in publicacoes %}
+                        <li class="publicacao-item mb-4">
+                            <h3><b>{{ publicacao.titulo }}</b></h3>
+                            <p>{{ publicacao.conteudo }}</p>
+                            <small class="texto-mutado">Publicado por {{ publicacao.usuario.username }} em {{ publicacao.data_publicacao }}</small>
+                            <hr>
+                        </li>
+                    {% empty %}
+                        <li>Nenhuma publicação disponível no momento.</li>
+                    {% endfor %}
+                    
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

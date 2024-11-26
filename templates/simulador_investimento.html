@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Simulador de Investimento{% endblock %}
+
+{% block content %}
+<div class="container-xl mt-5">
+    <h2 class="text-center mb-4">Simulador de Investimento</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 simulador-card">
+                <form id="investmentForm">
+                    <div class="mb-3">
+                        <label for="initialInvestment" class="form-label">Qual valor você gostaria de investir?</label>
+                        <input type="number" class="form-control" id="initialInvestment" placeholder="Valor inicial" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="monthlyDeposit" class="form-label">Quanto gostaria de depositar por mês?</label>
+                        <input type="number" class="form-control" id="monthlyDeposit" placeholder="Valor mensal" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="investmentPeriod" class="form-label">Por quanto tempo deixaria seu dinheiro investido? (em meses)</label>
+                        <input type="number" class="form-control" id="investmentPeriod" placeholder="Período" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Calcular</button>
+                </form>
+
+                <div id="results" class="mt-4 text-center">
+                    <!-- Resultados serão exibidos aqui -->
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4 info-card">
+                <h4>Sobre o CDB</h4>
+                <p>Um CDB com retorno de 100% do CDI rende em torno de 10,97% ao ano, considerando a Selic a 11,25% ao ano. Lembrando que dos rendimentos deve ser deduzido o Imposto de Renda, que é de 17,5% para uma aplicação que fica durante 365 dias (porque a alíquota do IR vai diminuindo quanto mais tempo o dinheiro fica aplicado).</p>
+            </div>
+            <div class="card shadow-lg p-4 info-card mt-4">
+                <h4>Sobre o CDI</h4>
+                <p>O CDI, ou Certificado de Depósito Interbancário, é uma taxa de juros utilizada nos empréstimos entre os bancos. Ela é usada como principal índice dos investimentos de renda fixa (aqueles que possuem uma rentabilidade previsível).</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('investmentForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const initialInvestment = parseFloat(document.getElementById('initialInvestment').value);
+        const monthlyDeposit = parseFloat(document.getElementById('monthlyDeposit').value);
+        const investmentPeriod = parseInt(document.getElementById('investmentPeriod').value);
+
+        // Taxa de retorno fixa de 10,97% ao ano
+        const annualInterestRate = 0.1097;
+        const monthlyInterestRate = annualInterestRate / 12;
+
+        let totalInvested = initialInvestment;
+        let futureValue = initialInvestment;
+
+        for (let i = 0; i < investmentPeriod; i++) {
+            futureValue = (futureValue + monthlyDeposit) * (1 + monthlyInterestRate);
+            totalInvested += monthlyDeposit;
+        }
+
+        const profit = futureValue - totalInvested;
+
+        document.getElementById('results').innerHTML = `
+            <h4>Resultados:</h4>
+            <p>Total investido: R$ ${totalInvested.toFixed(2)}</p>
+            <p>Em ${investmentPeriod} meses seu retorno pode ser de até: R$ ${profit.toFixed(2)}</p>
+        `;
+    });
+</script>
+{% endblock %}

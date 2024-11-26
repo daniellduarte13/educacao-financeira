@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Perfil - Educação Financeira{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2>Bem-vindo, {{ user.username }}</h2>
+    <p>Email: {{ user.email }}</p>
+    <a href="{% url 'edit_profile' %}" class="btn btn-primary">Editar Perfil</a>
+    <a href="{% url 'delete_profile' %}" class="btn btn-danger">Excluir Conta</a>
+    <br>
+    <hr>
+
+    <!-- Incluir o bloco de mensagens -->
+    {% include 'includes/messages.html' %}
+
+    <h1 class="mt-5">Suas Publicações</h1>
+    <ul class="list-unstyled">
+        {% for publicacao in publicacoes %}
+            <li class="publicacao-item d-flex align-items-start">
+                <div>
+                    <h3><b>{{ publicacao.titulo }}</b></h3>
+                    <p>{{ publicacao.conteudo }}</p>
+                    <div class="d-flex align-items-center">
+                        <small class="me-3">Publicado em: {{ publicacao.data_publicacao }}</small>
+                        <a href="{% url 'delete_publicacao' publicacao.id %}" class="btn btn-danger">Excluir</a>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

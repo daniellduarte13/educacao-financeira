@@ -1,0 +1,163 @@
+<!-- Desenvolvido por Daniel Jozias. Aluno do 3º X - CEMEP -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Educação Financeira{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body class="d-flex flex-column min-vh-100 dark-theme">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <!-- Logo e Título -->
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <span class="brand-text">Educação Financeira</span>
+            </a>
+            <img src="{% static 'assets/img/logo_definitivo.png' %}" alt="Logo" class="navbar-logo-right">
+            
+            <!-- Botão Toggle para Mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Menu de Navegação -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <!-- Fundamentos -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'fundamentos' in request.path %}active{% endif %}" 
+                           href="#" id="fundamentosDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Fundamentos
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="fundamentosDropdown">
+                            <li><a class="dropdown-item {% if request.path == '/conceitos-basicos/' %}active{% endif %}" 
+                                  href="{% url 'conceitos_basicos' %}">Conceitos Básicos</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/orcamento-pessoal/' %}active{% endif %}" 
+                                  href="{% url 'orcamento_pessoal' %}">Orçamento Pessoal</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/poupanca/' %}active{% endif %}" 
+                                  href="{% url 'poupanca' %}">Poupança</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Planejamento e Risco -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'planejamento-risco' in request.path %}active{% endif %}" 
+                           href="#" id="planejamentoRiscoDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Planejamento e Risco
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="planejamentoRiscoDropdown">
+                            <li><a class="dropdown-item {% if request.path == '/custo-oportunidade/' %}active{% endif %}" 
+                                  href="{% url 'custo_oportunidade' %}">Custo de Oportunidade</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/fundo-emergencia/' %}active{% endif %}" 
+                                  href="{% url 'fundo_emergencia' %}">Fundo de Emergência</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/renda-gastos/' %}active{% endif %}" 
+                                  href="{% url 'renda_gastos' %}">Renda e Gastos</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/investimentos/' %}active{% endif %}" 
+                                  href="{% url 'investimentos' %}">Investimentos</a></li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Outros -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% if 'outros' in request.path %}active{% endif %}" 
+                           href="#" id="outrosDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Outros
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="outrosDropdown">
+                            <li><a class="dropdown-item {% if request.path == '/credito-score/' %}active{% endif %}" 
+                                  href="{% url 'credito_score' %}">Crédito e Score de Crédito</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/impostos-tributacao/' %}active{% endif %}" 
+                                  href="{% url 'impostos_tributacao' %}">Impostos e Tributação</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/empreendedorismo-financas/' %}active{% endif %}" 
+                                  href="{% url 'empreendedorismo_financas' %}">Empreendedorismo e Finanças</a></li>
+                            <li><a class="dropdown-item {% if request.path == '/psicologia-dinheiro/' %}active{% endif %}" 
+                                  href="{% url 'psicologia_dinheiro' %}">Psicologia do Dinheiro</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="naPraticaDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Na Prática
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="naPraticaDropdown">
+                            <li><a class="dropdown-item" href="{% url 'simulador_investimento' %}">Simulador de Investimento</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'rede_social' %}">Rede Social</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'profile' %}">Perfil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Registrar</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg text-center py-3 mt-5">
+        <div class="rodape">
+            <div class="rodape__content">
+                <div class="rodape__section rodape__contact">
+                    <h4 class="rodape__subtitle">Entre em Contato</h4>
+                    <p><strong>Email:</strong> daniel.martins13work@gmail.com</p>
+                    <p><strong>Telefone:</strong> (19) 991138750</p>
+                </div>
+                <div class="rodape__section rodape__social">
+                    <h4 class="rodape__subtitle">Acompanhe o projeto!</h4>
+                    <div class="rodape__social-links">
+                        <a href="https://www.instagram.com/daniell_duarte13/" class="social-icon" aria-label="Instagram">
+                            <img src="{% static 'assets/img/insta_icon.png' %}" alt="Instagram" width="35" height="35">
+                        </a>
+                        <a href="https://www.linkedin.com/in/daniel-jozias-20499a301/" class="social-icon" aria-label="LinkedIn">
+                            <img src="{% static 'assets/img/linkedin_icon.png' %}" alt="LinkedIn" width="35" height="35">
+                        </a>
+                        <a href="https://www.youtube.com/@dani-se01" class="social-icon" aria-label="YouTube">
+                            <img src="{% static 'assets/img/youtube_icon.png' %}" alt="YouTube" width="35" height="35">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="rodape__bottom">
+                <p>&copy; 2024 Educação Financeira. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- 
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+C:\pythonProject\.venv\Scripts\activate.ps1
+(na escola é o de baixo)
+C:\venv\Scripts\Activate.ps1
+
+py manage.py runserver
+-->
